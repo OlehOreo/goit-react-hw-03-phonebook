@@ -7,6 +7,7 @@ import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
 import { Section, Title, SubTitle } from './App.style';
 import { Message } from './Notiflix/Message';
+import Inputmask from 'inputmask';
 
 export class App extends Component {
   state = {
@@ -19,10 +20,21 @@ export class App extends Component {
     filter: '',
   };
 
-  inputMas = () => {
-    const input = document.querySelector('#phone');
-    console.log(input);
-  };
+  componentDidMount() {
+    const savedContacts = localStorage.getItem('Contacts');
+    if (savedContacts !== null) {
+      this.setState({ contacts: JSON.parse(savedContacts) });
+    }
+
+    const inputs = document.querySelector('input[type=tel]');
+    let im = new Inputmask('+38 (099) 999-99-99');
+    im.mask(inputs);
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('Contacts', JSON.stringify(this.state.contacts));
+    }
+  }
 
   addContact = (contact, actions) => {
     const contactCheck = this.state.contacts.find(
@@ -47,7 +59,6 @@ export class App extends Component {
   };
 
   searchFilter = newFilter => {
-    console.log(newFilter.length);
     this.setState({
       filter: newFilter,
     });

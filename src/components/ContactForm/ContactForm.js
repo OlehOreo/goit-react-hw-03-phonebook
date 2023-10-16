@@ -1,6 +1,5 @@
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import Inputmask from 'inputmask';
 
 import {
   BtnAddContact,
@@ -23,13 +22,6 @@ const contactSchema = Yup.object().shape({
     .min(12, 'This field must be filled')
     .required('This field is required!'),
 });
-
-setTimeout(() => {
-  const inputs = document.querySelector('input[type=tel]');
-
-  let im = new Inputmask('+38 (099) 999-99-99');
-  im.mask(inputs);
-}, 50);
 
 const initialValues = {
   name: '',
